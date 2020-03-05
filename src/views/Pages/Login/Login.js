@@ -1,9 +1,9 @@
 import React, { Component, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
-//import firebase, { auth, provider } from '../../../firebase';
+import firebase, { auth, provider } from '../../../firebase';
 import { useHistory } from 'react-router';
-import { authenticationService } from '../../../_helpers/authentication.service'; 
+//import { authenticationservice } from '../../../_services/authentication.service'; 
 
 //const { classes } = props;
 //const { username, setUsername } = useState('');
@@ -14,14 +14,29 @@ function Login(props) {
 	const { classes } = props;
   const history = useHistory();
 
-	const [email, setEmail] = useState('');
+  const [email, setEmail] = useState('');
+  const [user, setUser] = useState('');
 	const [password, setPassword] = useState('');
 
   async function login() {
     try {
-      await authenticationService.login(email, password);
+      //await authenticationservice.login(email, password);
       
-      history.push('/dashboard');
+      auth.signInWithPopup(provider) 
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+        setUser(user);
+        localStorage.setItem('user', JSON.stringify(user));
+        //if(user.email="")
+        //{
+        history.push('/dashboard');
+        //}
+        
+        //this.setState({user});
+      });
+
+      
     } catch (error) {
       alert(error.message);
     }

@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom';
 import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
 
 import usersData from '../Users/UsersData';
-import firebase, { auth, provider } from '../../firebase';
+import '@firebase/firestore';
+
+import firebase, { db, auth, provider, firestore } from '../../firebase';
 
 function EnvanterRow(props) {
   const envanter = props.envanter
@@ -33,37 +35,54 @@ class EnvanterListesi extends Component {
     constructor(props) {
         super(props);
         
-        //this.ref = firebase.firestore().collection('Envanterler');
-        //const ref = firebase.firestore().collection('Envanterler');
-        //console.log('ref:'+this.ref);
+        this.data = db.collection('Envanterler');
+        const ref = db.collection('Envanterler');
+        console.log('ref:'+this.data);
         this.unsubscribe = null;
         this.state = {
             envanterler: []
         };
 
-        this.getEnvanterler();
+        //this.getEnvanterler();
     }
 
     componentDidMount() {
         console.log('componentDidMount');
-        this.getEnvanterler();
+       // this.getEnvanterler();
+
+        this.db.collection('Envanterler').on('value', snapshot => {
+          const messageObject = snapshot.val();
+          if (messageObject) {
+            // convert messages list from snapshot
+            this.setState({ loading: false });
+          } else {
+            this.setState({ envanterler: null, loading: false });
+          }
+        });
     };
 
     componentWillMount(){
         console.log('componentWillMount');
-        this.getEnvanterler()
+//        this.getEnvanterler()
       }
 
       getCurrentUsername() {
-        this.auth = firebase.auth();
-        return this.auth.currentUser && this.auth.currentUser.displayName;
+        //const currentUser = authenticationService.currentUserValue;
+        //this.auth = firebase.auth();
+        //return this.auth.currentUser && this.auth.currentUser.displayName;
       }
 
     getEnvanterler() {
-        this.auth = firebase.auth();
+        //this.auth = auth();
         let envanterler = [];
         console.log(this.getCurrentUsername());  
-        firebase.firestore().collection('Envanterler').get().then((querySnapshot) => {
+/*
+        this.db.ref('Envanterler').then((querySnapshot) => {
+          const messageList = Object.keys(messageObject).map(key => ({
+            ...messageObject[key],
+            uid: key,
+          }));
+  
             querySnapshot.forEach((doc) => {
                 console.log(`${doc.id} => ${doc.data()}`);
                 // böylede çalıştı : envanterler.push(doc.data());
@@ -81,7 +100,7 @@ class EnvanterListesi extends Component {
                 envanterler
               })
         });
-
+*/
         //let envanterler = []
         /*
         firebase.database().ref(`Firmalar`).once('value', snapshot => {

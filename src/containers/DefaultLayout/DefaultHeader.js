@@ -19,10 +19,11 @@ class DefaultHeader extends Component {
   async logoff() {
     alert('logoff');
 		try {
+      localStorage.removeItem('user');
       await firebase.logout();
-      alert(test);
+//      alert(test);
 		} catch(error) {
-			alert(error.message);
+//			alert(error.message);
 		}
   }
   

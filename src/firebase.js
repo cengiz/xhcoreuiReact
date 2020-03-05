@@ -1,6 +1,7 @@
 import * as firebase from 'firebase';
 import firestore from 'firebase/firestore'
 
+
 //const settings = {timestampsInSnapshots: true};
 
 const config = {
@@ -28,3 +29,9 @@ module.exports = {
   }
 */
   export default { firebase, provider, auth };
+
+export const fire = firebase
+export const ref = firebase.database().ref()
+export const firebaseAuth = firebase.auth
+export const messaging = firebase.messaging();
+export const db = firebase.firestore();

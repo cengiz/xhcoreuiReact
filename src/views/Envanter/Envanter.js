@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
 
 import usersData from '../Users/UsersData';
+import '@firebase/firestore';
 
 class Envanter extends Component {
 
